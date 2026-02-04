@@ -68,7 +68,7 @@ export function CameraSection({ hookState }: CameraSectionProps) {
       </div>
 
       {/* Camera Container */}
-      <div className="relative aspect-video bg-background">
+      <div className="relative bg-background" style={{ height: '600px' }}>
         {error ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8">
             <div className="w-16 h-16 rounded-full bg-destructive/10 flex items-center justify-center">

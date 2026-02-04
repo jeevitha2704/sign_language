@@ -10,14 +10,79 @@ const ASL_ALPHABET = [
   { letter: 'C', description: 'Curved hand like C shape', difficulty: 'Medium' },
   { letter: 'D', description: 'Index up, others curled', difficulty: 'Easy' },
   { letter: 'E', description: 'Fingers curled into palm', difficulty: 'Medium' },
-  { letter: 'F', description: 'Thumb and index touch', difficulty: 'Medium' },
+  { letter: 'F', description: 'Thumb and index touch (OK sign)', difficulty: 'Medium' },
   { letter: 'G', description: 'Index pointing sideways', difficulty: 'Medium' },
+  { letter: 'H', description: 'Index and middle parallel', difficulty: 'Medium' },
   { letter: 'I', description: 'Pinky finger extended', difficulty: 'Easy' },
+  { letter: 'J', description: 'Pinky with motion (simplified)', difficulty: 'Hard' },
+  { letter: 'K', description: 'Index and middle up, thumb between', difficulty: 'Medium' },
   { letter: 'L', description: 'L shape with thumb/index', difficulty: 'Easy' },
+  { letter: 'M', description: 'Three fingers over thumb', difficulty: 'Medium' },
+  { letter: 'N', description: 'Two fingers over thumb', difficulty: 'Medium' },
   { letter: 'O', description: 'O shape with fingers', difficulty: 'Medium' },
+  { letter: 'P', description: 'Index pointing down', difficulty: 'Medium' },
+  { letter: 'Q', description: 'Index down, thumb on side', difficulty: 'Medium' },
+  { letter: 'R', description: 'Crossed fingers', difficulty: 'Hard' },
+  { letter: 'S', description: 'Fist with thumb over fingers', difficulty: 'Easy' },
+  { letter: 'T', description: 'Fist, thumb between fingers', difficulty: 'Medium' },
+  { letter: 'U', description: 'Index and middle together', difficulty: 'Easy' },
   { letter: 'V', description: 'Victory sign', difficulty: 'Easy' },
   { letter: 'W', description: 'Three fingers up', difficulty: 'Medium' },
+  { letter: 'X', description: 'Hooked index finger', difficulty: 'Medium' },
   { letter: 'Y', description: 'Thumb and pinky out', difficulty: 'Easy' },
+  { letter: 'Z', description: 'Index pointing (Z motion)', difficulty: 'Hard' },
+];
+
+// Common ASL words with actual hand signs
+const ASL_WORDS = [
+  { 
+    word: 'Hello', 
+    description: 'Open hand, fingers extended, move from forehead outward (like a salute)', 
+    letters: 'H-E-L-L-O', 
+    difficulty: 'Easy' 
+  },
+  { 
+    word: 'Thank You', 
+    description: 'Flat hand touch chin then move forward and down (open hand)', 
+    letters: 'T-H-A-N-K-Y-O-U', 
+    difficulty: 'Easy' 
+  },
+  { 
+    word: 'Yes', 
+    description: 'Fist made with thumb up (S sign with thumb extended), nod up/down', 
+    letters: 'Y-E-S', 
+    difficulty: 'Easy' 
+  },
+  { 
+    word: 'No', 
+    description: 'Thumb between first two fingers, or flat hand with fingers together moving side to side', 
+    letters: 'N-O', 
+    difficulty: 'Easy' 
+  },
+  { 
+    word: 'Please', 
+    description: 'Flat hand circular motion on chest (clockwise)', 
+    letters: 'P-L-E-A-S-E', 
+    difficulty: 'Medium' 
+  },
+  { 
+    word: 'Sorry', 
+    description: 'Fist in S shape, circular motion on chest', 
+    letters: 'S-O-R-R-Y', 
+    difficulty: 'Medium' 
+  },
+  { 
+    word: 'Help', 
+    description: 'Fist on palm of other hand, lift up (A sign on flat hand)', 
+    letters: 'H-E-L-P', 
+    difficulty: 'Easy' 
+  },
+  { 
+    word: 'Love', 
+    description: 'Arms crossed over chest (hugging motion)', 
+    letters: 'L-O-V-E', 
+    difficulty: 'Medium' 
+  },
 ];
 
 const TIPS = [
@@ -45,6 +110,7 @@ const TIPS = [
 
 export function GuideSection() {
   const [selectedLetter, setSelectedLetter] = useState<string | null>(null);
+  const [selectedWord, setSelectedWord] = useState<string | null>(null);
 
   return (
     <Card className="p-6 bg-card/50 border-border/50">
@@ -56,7 +122,7 @@ export function GuideSection() {
 
         <TabsContent value="alphabet" className="space-y-4">
           <p className="text-sm text-muted-foreground mb-4">
-            Click on a letter to see details. Currently supported letters are shown below.
+            Click on a letter to see details. All 26 letters of the ASL alphabet are now supported.
           </p>
           
           <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7 gap-2">
@@ -94,7 +160,9 @@ export function GuideSection() {
                       <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
                         letterData.difficulty === 'Easy' 
                           ? 'bg-green-500/20 text-green-400' 
-                          : 'bg-yellow-500/20 text-yellow-400'
+                          : letterData.difficulty === 'Medium'
+                          ? 'bg-yellow-500/20 text-yellow-400'
+                          : 'bg-red-500/20 text-red-400'
                       }`}>
                         {letterData.difficulty}
                       </span>
@@ -104,6 +172,65 @@ export function GuideSection() {
               })()}
             </div>
           )}
+
+          {/* Common Words Section */}
+          <div className="mt-8 pt-8 border-t border-border/50">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Common Words</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Click on a word to see details. These are actual ASL hand signs that can be recognized by the camera.
+            </p>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {ASL_WORDS.map(({ word }) => (
+                <button
+                  key={word}
+                  onClick={() => setSelectedWord(selectedWord === word ? null : word)}
+                  className={`p-4 rounded-lg border transition-all duration-200 text-left ${
+                    selectedWord === word
+                      ? 'bg-primary/20 border-primary/50 scale-105'
+                      : 'bg-card border-border hover:border-primary/30 hover:bg-primary/5'
+                  }`}
+                >
+                  <span className="text-lg font-bold text-foreground">{word}</span>
+                </button>
+              ))}
+            </div>
+
+            {selectedWord && (
+              <div className="mt-4 p-4 rounded-lg bg-primary/5 border border-primary/20 animate-in fade-in slide-in-from-bottom-2">
+                {(() => {
+                  const wordData = ASL_WORDS.find(w => w.word === selectedWord);
+                  return wordData ? (
+                    <div className="flex items-start gap-4">
+                      <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <span className="text-2xl font-bold gradient-text">{selectedWord}</span>
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-foreground mb-1">
+                          {selectedWord}
+                        </h4>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {wordData.description}
+                        </p>
+                        <p className="text-xs text-muted-foreground mb-2">
+                          Letters: {wordData.letters}
+                        </p>
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
+                          wordData.difficulty === 'Easy' 
+                            ? 'bg-green-500/20 text-green-400' 
+                            : wordData.difficulty === 'Medium'
+                            ? 'bg-yellow-500/20 text-yellow-400'
+                            : 'bg-red-500/20 text-red-400'
+                        }`}>
+                          {wordData.difficulty}
+                        </span>
+                      </div>
+                    </div>
+                  ) : null;
+                })()}
+              </div>
+            )}
+          </div>
         </TabsContent>
 
         <TabsContent value="tips" className="space-y-4">
