@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/static",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/motion", 
+      "destination": "/index.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

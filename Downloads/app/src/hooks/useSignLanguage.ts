@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { Hands, Results } from '@mediapipe/hands';
+import { Hands, type Results } from '@mediapipe/hands';
 import { FaceMesh } from '@mediapipe/face_mesh';
 
 // Motion detection interfaces
@@ -26,7 +26,6 @@ let faceDetectionState = {
 // Finger indices in MediaPipe Hands landmarks
 const WRIST = 0;
 const THUMB_TIP = 4;
-const THUMB_MCP = 2;
 const INDEX_MCP = 5;
 const INDEX_PIP = 6;
 const INDEX_TIP = 8;
@@ -603,7 +602,6 @@ function detectHelpMotion(frames: MotionFrame[]): MotionPattern | null {
   
   // Check for Help gesture: flat hand up + thumb on palm + lift both hands up
   const firstFrame = recentFrames[0];
-  const lastFrame = recentFrames[recentFrames.length - 1];
   
   // Check if hand starts flat (palm up) and ends higher
   const startY = handCenters[0].y;
